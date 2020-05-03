@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>My Document</title>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+</head>
+
+<body>
+
+   <div class="container py-5" id="app">
+      <table class="table" id="coronaTable">
+         <thead>
+            <tr>
+               <th scope="col">Country</th>
+               <th scope="col">Total Cases</th>
+               <th scope="col">New Cases</th>
+               <th scope="col">Total Deaths</th>
+               <th scope="col">New Deaths</th>
+               <th scope="col">Total Recovered</th>
+               <th scope="col">Serious Critical</th>
+               <th scope="col">Active Cases</th>
+               <th scope="col">Total Cases Per 1M pop</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr v-for="items in coronaVirusData" :id="items.country_name">
+               <th>{{items.country_name}}</th>
+               <td>+{{items.cases}}</td>
+               <td>{{items.new_cases}}</td>
+               <td>{{items.deaths}}</td>
+               <td>+{{items.new_deaths}}</td>
+               <td>{{items.total_recovered}}</td>
+               <td>{{items.serious_critical}}</td>
+               <td>{{items.active_cases}}</td>
+               <td>{{items.total_cases_per_1m_population}}</td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"></script>
+   <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+   <script>
+      var app = new Vue({
+         el: '#app',
+         data: {
+            coronaVirusData: {},
+         },
+         created() {
+            this.countDown
+         },
+         computed: {
+            countDown: function () {
+               this.coronaVirusData = this.count;
+               axios.get("https://coronavirus-monitor-v2.p.rapidapi.com/coronavirus/cases_by_country.php", {
+                  headers: {
+                     "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
+                     "x-rapidapi-key": "37a28f22c2msh592074f3f5ebd4fp1c4821jsnf756dd81549f"
+                  }
+               }).then(result => {
+                  console.log(result.data.countries_stat);
+                  this.coronaVirusData = result.data.countries_stat;
+               }).catch(error => {
+                  console.log(error);
+               })
+            }
+         },
+         mounted:
+            function () {
+               this.$nextTick(function () {
+                  window.setInterval(() => {
+                     this.countDown;
+                  }, 1000 * 60 * 60);
+               })
+            }
+
+      })
+   </script>
+
+</body>
+
+</html>
