@@ -19,9 +19,8 @@
     <style>
       .covid {
         background-color: #eceff1;
-        margin: 12px;
         width: 450px;
-        border: 1px solid gray;
+        min-height: 300px;
       }
       .tracker-table .table tr {
         font-size: 13px;
@@ -32,52 +31,69 @@
         font-weight: 600;
       }
       .tracker-table .table tbody tr td:nth-child(4) {
-        background-color: #F0F4C3;
-        color: #3E272;
+        background-color: #f0f4c3;
+        color: #000000;
       }
       .tracker-table .table tbody tr td {
         width: 20px;
+      }
+      .loading {
+        width: 450px;
+        position: absolute;
+        top: 200px;
       }
     </style>
   </head>
   <body>
     <section class="covid" id="app">
-      <div class="container p-1 mt-1">
-        <h3 class="text-center text-primary">Covid-19 Tracker</h3>
-      </div>
-      <div class="tracker-table">
-        <div class="text-right m-1">
-          <input type="search" name="" id="search" placeholder="search" id="" />
+      <div>
+        <div class="container p-1 mt-1">
+          <h3 class="text-center text-primary">Covid-19 Tracker</h3>
         </div>
-        <table class="table table-responsive">
-          <thead>
-            <tr>
-              <th scope="col">SN</th>
-              <th>Country</th>
-              <th scope="col">Total Cases</th>
-              <th scope="col">New Cases</th>
-              <th scope="col">Deaths</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(items, index) in coronaVirusData"
-              :id="items.country_name"
-            >
-              <td>{{index + 1}}</td>
-              <td style="width: 10px;">{{items.country_name}}</td>
-              <td>{{items.cases}}</td>
-              <td>+{{items.new_cases}}</td>
-              <td>{{items.deaths}}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="loading d-flex justify-content-center" v-if="!isLoaded">
+          <div class="spinner-border text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div class="tracker-table">
+          <div class="text-right m-1">
+            <input
+              type="search"
+              name=""
+              id="search"
+              placeholder="search"
+              id=""
+            />
+          </div>
+          <table class="table table-responsive">
+            <thead>
+              <tr>
+                <th scope="col">SN</th>
+                <th>Country</th>
+                <th scope="col">Total Cases</th>
+                <th scope="col">New Cases</th>
+                <th scope="col">Deaths</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(items, index) in coronaVirusData"
+                :id="items.country_name"
+              >
+                <td>{{index + 1}}</td>
+                <td style="width: 10px;">{{items.country_name}}</td>
+                <td>{{items.cases}}</td>
+                <td>+{{items.new_cases}}</td>
+                <td>{{items.deaths}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="./popup.js"></script>
-    
   </body>
 </html>

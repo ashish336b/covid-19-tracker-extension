@@ -2,6 +2,7 @@ var app = new Vue({
   el: "#app",
   data: {
     coronaVirusData: {},
+    isLoaded : false,
   },
   created() {
     this.countDown;
@@ -21,14 +22,8 @@ var app = new Vue({
       );
       this.coronaVirusData = result.data.countries_stat;
       this.coronaVirusData.shift();
+      this.isLoaded = true;
     },
-  },
-  mounted: function () {
-    this.$nextTick(function () {
-      window.setInterval(() => {
-        this.countDown;
-      }, 1000 * 60 * 60);
-    });
   },
 });
 
